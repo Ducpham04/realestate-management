@@ -39,11 +39,11 @@ export const propertyStatusTones: Record<PropertyStatus, Tone> = {
 };
 
 export const propertyStatusColors: Record<PropertyStatus, string> = {
-  AVAILABLE: '#16a34a',
-  RESERVED: '#f59e0b',
-  SOLD: '#2563eb',
-  RENTED: '#7c3aed',
-  INACTIVE: '#94a3b8',
+  AVAILABLE: 'oklch(0.58 0.11 185)',
+  RESERVED: 'oklch(0.78 0.13 75)',
+  SOLD: 'oklch(0.42 0.1 255)',
+  RENTED: 'oklch(0.62 0.12 300)',
+  INACTIVE: 'oklch(0.82 0.01 185)',
 };
 
 export const customerTypeLabels: Record<CustomerType, string> = {

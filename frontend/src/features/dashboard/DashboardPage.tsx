@@ -15,7 +15,6 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-import { Building2, CalendarClock, TrendingUp, Users, type LucideIcon } from 'lucide-react';
 import { appointmentApi, dashboardApi } from '@/api/endpoints';
 import { useAuth } from '@/auth/AuthContext';
 import { Badge, Card, ErrorState, PageHeader, Select, Spinner } from '@/components/ui';
@@ -23,20 +22,14 @@ import { formatCompactVnd, formatCurrency, formatDateTime, formatMonth } from '@
 import { appointmentStatusLabels, appointmentStatusTones, propertyStatusColors, propertyStatusLabels } from '@/lib/labels';
 import { getErrorMessage } from '@/lib/errors';
 
-function StatCard({ label, value, hint, icon: Icon }: { label: string; value: string; hint?: string; icon: LucideIcon }) {
+/** One cell of the KPI strip: label, figure, context. No decoration competing with the number. */
+function Metric({ label, value, hint }: { label: string; value: string; hint?: string }) {
   return (
-    <Card className="p-5">
-      <div className="flex items-start justify-between">
-        <div>
-          <p className="text-sm font-medium text-slate-500">{label}</p>
-          <p className="mt-2 text-2xl font-bold text-slate-900">{value}</p>
-          {hint && <p className="mt-1 text-xs text-slate-500">{hint}</p>}
-        </div>
-        <div className="rounded-xl bg-brand-50 p-2.5 text-brand-600">
-          <Icon className="h-5 w-5" />
-        </div>
-      </div>
-    </Card>
+    <div className="bg-white px-5 py-4">
+      <dt className="text-sm text-slate-600">{label}</dt>
+      <dd className="tabular mt-1 text-2xl font-semibold text-slate-900">{value}</dd>
+      {hint && <dd className="mt-0.5 text-sm text-slate-500">{hint}</dd>}
+    </div>
   );
 }
 
@@ -74,39 +67,34 @@ export default function DashboardPage() {
       {!s ? (
         <Spinner />
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          <StatCard
-            label="Bất động sản"
-            value={String(s.totalProperties)}
-            hint={`${s.availableProperties} đang mở bán`}
-            icon={Building2}
-          />
-          <StatCard label="Khách hàng" value={String(s.totalCustomers)} icon={Users} />
-          <StatCard
-            label="Lịch hẹn 7 ngày tới"
-            value={String(s.upcomingAppointments)}
-            hint={`${s.activeDeals} giao dịch đang xử lý`}
-            icon={CalendarClock}
-          />
-          <StatCard
-            label="Doanh thu tháng này"
-            value={formatCompactVnd(s.revenueThisMonth)}
-            hint={`${s.closedDealsThisMonth} giao dịch · hoa hồng ${formatCompactVnd(s.commissionThisMonth)}`}
-            icon={TrendingUp}
-          />
-        </div>
+        <Card className="overflow-hidden">
+          <dl className="grid gap-px bg-slate-200 sm:grid-cols-2 xl:grid-cols-4">
+            <Metric
+              label="Doanh thu tháng này"
+              value={formatCompactVnd(s.revenueThisMonth)}
+              hint={`${s.closedDealsThisMonth} giao dịch đã chốt · hoa hồng ${formatCompactVnd(s.commissionThisMonth)}`}
+            />
+            <Metric label="Giao dịch đang xử lý" value={String(s.activeDeals)} hint="Đang đàm phán hoặc đã đặt cọc" />
+            <Metric label="Lịch hẹn 7 ngày tới" value={String(s.upcomingAppointments)} hint="Buổi xem nhà đã lên lịch" />
+            <Metric
+              label="Bất động sản đang mở bán"
+              value={`${s.availableProperties} / ${s.totalProperties}`}
+              hint={`${s.totalCustomers} khách hàng ${isAdmin ? 'trong hệ thống' : 'bạn phụ trách'}`}
+            />
+          </dl>
+        </Card>
       )}
 
       <div className="mt-6 grid gap-6 xl:grid-cols-3">
         <Card className="p-5 xl:col-span-2">
-          <div className="mb-4 flex items-start justify-between gap-4">
+          <div className="mb-4 flex flex-wrap items-start justify-between gap-4">
             <div>
               <h2 className="font-semibold text-slate-900">Doanh thu theo tháng</h2>
               <p className="text-xs text-slate-500">Giá trị giao dịch đã chốt và hoa hồng</p>
             </div>
             <Select
               aria-label="Khoảng thời gian"
-              className="w-auto"
+              className="w-32"
               value={months}
               onChange={(e) => setMonths(Number(e.target.value))}
               options={[
@@ -122,12 +110,12 @@ export default function DashboardPage() {
             <div className="h-72">
               <ResponsiveContainer width="100%" height="100%">
                 <ComposedChart data={chartData} margin={{ top: 5, right: 10, left: 0, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" vertical={false} />
-                  <XAxis dataKey="label" tick={{ fontSize: 12, fill: '#64748b' }} axisLine={false} tickLine={false} />
+                  <CartesianGrid stroke="oklch(0.925 0.007 185)" vertical={false} />
+                  <XAxis dataKey="label" tick={{ fontSize: 12, fill: 'oklch(0.44 0.014 185)' }} axisLine={false} tickLine={false} />
                   <YAxis
                     yAxisId="left"
                     tickFormatter={(v: number) => formatCompactVnd(v)}
-                    tick={{ fontSize: 12, fill: '#64748b' }}
+                    tick={{ fontSize: 12, fill: 'oklch(0.44 0.014 185)' }}
                     axisLine={false}
                     tickLine={false}
                     width={80}
@@ -136,7 +124,7 @@ export default function DashboardPage() {
                     yAxisId="right"
                     orientation="right"
                     tickFormatter={(v: number) => formatCompactVnd(v)}
-                    tick={{ fontSize: 12, fill: '#64748b' }}
+                    tick={{ fontSize: 12, fill: 'oklch(0.44 0.014 185)' }}
                     axisLine={false}
                     tickLine={false}
                     width={80}
@@ -146,15 +134,15 @@ export default function DashboardPage() {
                     labelClassName="font-medium"
                   />
                   <Legend wrapperStyle={{ fontSize: 12 }} />
-                  <Bar yAxisId="left" dataKey="revenue" name="Doanh thu" fill="#337dfc" radius={[6, 6, 0, 0]} />
+                  <Bar yAxisId="left" dataKey="revenue" name="Doanh thu" fill="oklch(0.58 0.11 185)" radius={[4, 4, 0, 0]} maxBarSize={36} />
                   <Line
                     yAxisId="right"
-                    type="monotone"
+                    type="linear"
                     dataKey="commission"
                     name="Hoa hồng"
-                    stroke="#f59e0b"
+                    stroke="oklch(0.4 0.09 255)"
                     strokeWidth={2}
-                    dot={{ r: 3 }}
+                    dot={{ r: 3, strokeWidth: 0, fill: 'oklch(0.4 0.09 255)' }}
                   />
                 </ComposedChart>
               </ResponsiveContainer>

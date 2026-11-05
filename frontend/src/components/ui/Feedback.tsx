@@ -13,7 +13,7 @@ export function Spinner({ label = 'Đang tải...' }: { label?: string }) {
 export function EmptyState({ title, description, action }: { title: string; description?: string; action?: ReactNode }) {
   return (
     <div className="flex flex-col items-center justify-center py-14 text-center">
-      <Inbox className="h-10 w-10 text-slate-300" />
+      <Inbox className="h-10 w-10 text-slate-400" aria-hidden />
       <p className="mt-3 font-medium text-slate-700">{title}</p>
       {description && <p className="mt-1 text-sm text-slate-500">{description}</p>}
       {action && <div className="mt-4">{action}</div>}
@@ -24,7 +24,7 @@ export function EmptyState({ title, description, action }: { title: string; desc
 export function ErrorState({ message, onRetry }: { message: string; onRetry?: () => void }) {
   return (
     <div className="flex flex-col items-center justify-center py-14 text-center">
-      <AlertCircle className="h-10 w-10 text-red-400" />
+      <AlertCircle className="h-10 w-10 text-red-500" aria-hidden />
       <p className="mt-3 text-sm text-slate-600">{message}</p>
       {onRetry && (
         <button onClick={onRetry} className="mt-3 text-sm font-medium text-brand-600 hover:underline">

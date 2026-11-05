@@ -6,6 +6,12 @@ import { AxiosError } from 'axios';
 import { Toaster } from 'sonner';
 import { AuthProvider } from '@/auth/AuthContext';
 import { App } from './App';
+import '@fontsource/be-vietnam-pro/vietnamese-400.css';
+import '@fontsource/be-vietnam-pro/vietnamese-500.css';
+import '@fontsource/be-vietnam-pro/vietnamese-600.css';
+import '@fontsource/be-vietnam-pro/latin-400.css';
+import '@fontsource/be-vietnam-pro/latin-500.css';
+import '@fontsource/be-vietnam-pro/latin-600.css';
 import './index.css';
 
 const queryClient = new QueryClient({

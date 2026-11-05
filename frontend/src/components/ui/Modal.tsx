@@ -30,12 +30,12 @@ export function Modal({ open, title, onClose, children, footer, size = 'md' }: M
 
   return createPortal(
     <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto p-4 sm:items-center">
-      <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm" onClick={onClose} aria-hidden />
+      <div className="fixed inset-0 animate-fade-in bg-slate-900/50" onClick={onClose} aria-hidden />
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-title"
-        className={cn('relative w-full rounded-2xl bg-white shadow-xl', sizes[size])}
+        className={cn('relative w-full animate-dialog-in rounded-xl bg-white shadow-xl', sizes[size])}
       >
         <div className="flex items-center justify-between border-b border-slate-200 px-6 py-4">
           <h2 id="modal-title" className="text-lg font-semibold text-slate-900">

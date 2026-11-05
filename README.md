@@ -23,6 +23,7 @@ Hệ thống quản lý bất động sản full-stack: quản lý nguồn hàng
 - [API](#api)
 - [Phân quyền](#phân-quyền)
 - [Kiểm thử](#kiểm-thử)
+- [Thiết kế giao diện](#thiết-kế-giao-diện)
 - [Quyết định thiết kế](#quyết-định-thiết-kế)
 
 ---
@@ -358,6 +359,18 @@ cd frontend && npm run lint && npm test && npm run build
 - **13 test Vitest**: interceptor refresh token (nhiều request 401 đồng thời chỉ refresh một lần, refresh thất bại thì đăng xuất), route guard theo vai trò, các hàm format.
 
 GitHub Actions (`.github/workflows/ci.yml`) chạy toàn bộ test backend + frontend, build image Docker và smoke test `docker compose up` cho mỗi push/PR.
+
+---
+
+## Thiết kế giao diện
+
+Giao diện được tinh chỉnh theo bộ nguyên tắc [Impeccable](https://github.com/pbakaus/impeccable) cho bề mặt "Operate" (dashboard, admin): giữ khung ứng dụng và control quen thuộc, đặt bản sắc vào chữ, màu, mật độ và trạng thái. Chi tiết xem [`frontend/DESIGN.md`](frontend/DESIGN.md).
+
+- **Be Vietnam Pro**, tự host, một họ chữ duy nhất với 3 độ đậm; số trong bảng và chỉ số dùng `tabular-nums`.
+- **Bảng màu OKLCH**: brand xanh mòng két (hue 185) chỉ dùng cho hành động và trạng thái chọn; thang trung tính pha nhẹ hue của brand; chữ phụ và placeholder đạt tương phản ≥ 4.5:1.
+- Card chỉ dùng viền (không viền + bóng); KPI là một dải chia ô thay vì các card kèm icon; không dùng gradient chữ, glassmorphism, viền trái màu.
+- Chuyển động 150–220 ms, chỉ animate `opacity`/`transform`, tôn trọng `prefers-reduced-motion`.
+- Nút xác nhận gọi tên hành động ("Xóa bất động sản"); trạng thái rỗng phân biệt *chưa có dữ liệu* với *không có kết quả theo bộ lọc*.
 
 ---
 

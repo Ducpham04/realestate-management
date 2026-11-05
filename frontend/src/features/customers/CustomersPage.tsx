@@ -118,7 +118,27 @@ export default function CustomersPage() {
         ) : query.isError ? (
           <ErrorState message={getErrorMessage(query.error)} onRetry={() => query.refetch()} />
         ) : !query.data?.content.length ? (
-          <EmptyState title="Chưa có khách hàng" description="Thêm khách hàng đầu tiên để bắt đầu." />
+          debouncedKeyword || filters.type || filters.agentId ? (
+            <EmptyState
+              title="Không tìm thấy khách hàng phù hợp"
+              description="Kiểm tra lại tên, email hoặc số điện thoại."
+            />
+          ) : (
+            <EmptyState
+              title="Chưa có khách hàng nào"
+              description="Thêm khách hàng để đặt lịch xem nhà và tạo giao dịch."
+              action={
+                <Button
+                  onClick={() => {
+                    setEditing(null);
+                    setFormOpen(true);
+                  }}
+                >
+                  Thêm khách hàng
+                </Button>
+              }
+            />
+          )
         ) : (
           <>
             <Table>
@@ -132,7 +152,7 @@ export default function CustomersPage() {
                     Nhu cầu
                   </SortableTh>
                   <Th>Ngân sách</Th>
-                  <Th>Khu vực</Th>
+                  <Th className="hidden 2xl:table-cell">Khu vực</Th>
                   {isAdmin && <Th>Môi giới</Th>}
                   <SortableTh field="createdAt" sort={filters.sort!} onSort={(sort) => update({ sort })}>
                     Ngày tạo
@@ -149,10 +169,10 @@ export default function CustomersPage() {
                       <div className="text-xs text-slate-500">{c.email}</div>
                     </Td>
                     <Td>
-                      <Badge tone="blue">{customerTypeLabels[c.type]}</Badge>
+                      <Badge tone="slate">{customerTypeLabels[c.type]}</Badge>
                     </Td>
                     <Td>{budget(c)}</Td>
-                    <Td className="max-w-[12rem] truncate">{c.preferredLocation || '—'}</Td>
+                    <Td className="hidden max-w-[12rem] truncate 2xl:table-cell">{c.preferredLocation || '—'}</Td>
                     {isAdmin && <Td>{c.agent.fullName}</Td>}
                     <Td>{formatDate(c.createdAt)}</Td>
                     <Td className="text-right">
@@ -197,6 +217,7 @@ export default function CustomersPage() {
       <ConfirmDialog
         open={!!deleting}
         title="Xóa khách hàng"
+        confirmLabel="Xóa khách hàng"
         message={`Xóa khách hàng "${deleting?.fullName}"? Khách hàng đã có lịch hẹn hoặc giao dịch sẽ không thể xóa.`}
         loading={deleteMutation.isPending}
         onConfirm={() => deleting && deleteMutation.mutate(deleting.id)}

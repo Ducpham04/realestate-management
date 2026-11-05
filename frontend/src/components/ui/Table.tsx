@@ -13,7 +13,7 @@ export function Table({ children }: { children: ReactNode }) {
 export function Th({ className, ...props }: ThHTMLAttributes<HTMLTableCellElement>) {
   return (
     <th
-      className={cn('whitespace-nowrap px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500', className)}
+      className={cn('whitespace-nowrap px-4 py-3 text-left text-[13px] font-medium text-slate-600', className)}
       {...props}
     />
   );
@@ -40,7 +40,7 @@ export function SortableTh({ field, sort, onSort, children, className }: Sortabl
     <Th className={className}>
       <button
         type="button"
-        className={cn('inline-flex items-center gap-1 uppercase', active && 'text-slate-900')}
+        className={cn('inline-flex items-center gap-1 rounded hover:text-slate-900', active && 'text-slate-900')}
         onClick={() => onSort(`${field},${active && dir === 'desc' ? 'asc' : 'desc'}`)}
       >
         {children}

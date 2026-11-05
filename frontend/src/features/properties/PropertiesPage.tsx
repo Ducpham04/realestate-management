@@ -55,7 +55,7 @@ function PropertyCard({
 }) {
   const { address } = property;
   return (
-    <Card className="flex flex-col overflow-hidden">
+    <Card className="group flex flex-col overflow-hidden transition-colors duration-150 hover:border-slate-300">
       <div className="relative aspect-[16/10] bg-slate-100">
         <img
           src={property.images[0] ?? FALLBACK_IMAGE}
@@ -98,7 +98,7 @@ function PropertyCard({
         </div>
         <div className="mt-auto flex items-end justify-between pt-4">
           <div>
-            <p className="text-lg font-bold text-brand-700">
+            <p className="tabular text-lg font-semibold text-slate-900">
               {formatCompactVnd(property.price)}
               {property.listingType === 'RENT' && <span className="text-sm font-normal text-slate-500">/tháng</span>}
             </p>
@@ -151,6 +151,18 @@ export default function PropertiesPage() {
   });
 
   const update = (patch: Partial<PropertyFilters>) => setFilters((f) => ({ ...f, page: 0, ...patch }));
+  const PAGING_KEYS = ['page', 'size', 'sort'];
+  const hasFilters =
+    !!keyword ||
+    Object.entries(filters).some(([k, v]) => !PAGING_KEYS.includes(k) && v !== undefined && v !== '');
+  const resetFilters = () => {
+    setKeyword('');
+    setFilters({ page: 0, size: filters.size, sort: 'createdAt,desc' });
+  };
+  const openCreate = () => {
+    setEditing(null);
+    setFormOpen(true);
+  };
   const toNumber = (v: string) => (v === '' ? undefined : Number(v));
 
   return (
@@ -159,13 +171,8 @@ export default function PropertiesPage() {
         title="Bất động sản"
         description="Quản lý nguồn hàng bán và cho thuê"
         actions={
-          <Button
-            onClick={() => {
-              setEditing(null);
-              setFormOpen(true);
-            }}
-          >
-            <Plus className="h-4 w-4" /> Thêm mới
+          <Button onClick={openCreate}>
+            <Plus className="h-4 w-4" /> Thêm bất động sản
           </Button>
         }
       />
@@ -246,13 +253,7 @@ export default function PropertiesPage() {
             value={filters.minBedrooms ?? ''}
             onChange={(e) => update({ minBedrooms: toNumber(e.target.value) })}
           />
-          <Button
-            variant="ghost"
-            onClick={() => {
-              setKeyword('');
-              setFilters({ page: 0, size: filters.size, sort: 'createdAt,desc' });
-            }}
-          >
+          <Button variant="ghost" onClick={resetFilters} disabled={!hasFilters}>
             Xóa bộ lọc
           </Button>
         </div>
@@ -290,7 +291,23 @@ export default function PropertiesPage() {
         </>
       ) : (
         <Card>
-          <EmptyState title="Không tìm thấy bất động sản" description="Hãy thử thay đổi bộ lọc." />
+          {hasFilters ? (
+            <EmptyState
+              title="Không có bất động sản phù hợp"
+              description="Thử nới khoảng giá, diện tích hoặc bỏ bớt điều kiện lọc."
+              action={
+                <Button variant="secondary" onClick={resetFilters}>
+                  Xóa bộ lọc
+                </Button>
+              }
+            />
+          ) : (
+            <EmptyState
+              title="Chưa có bất động sản nào"
+              description="Thêm căn đầu tiên để bắt đầu quản lý nguồn hàng."
+              action={<Button onClick={openCreate}>Thêm bất động sản</Button>}
+            />
+          )}
         </Card>
       )}
 
@@ -298,6 +315,7 @@ export default function PropertiesPage() {
       <ConfirmDialog
         open={!!deleting}
         title="Xóa bất động sản"
+        confirmLabel="Xóa bất động sản"
         message={`Bạn chắc chắn muốn xóa "${deleting?.title}"? Thao tác này không thể hoàn tác.`}
         loading={deleteMutation.isPending}
         onConfirm={() => deleting && deleteMutation.mutate(deleting.id)}

@@ -233,6 +233,7 @@ export default function DealsPage() {
       <ConfirmDialog
         open={!!deleting}
         title="Xóa giao dịch"
+        confirmLabel="Xóa giao dịch"
         message="Xóa giao dịch này? Bất động sản đang giữ chỗ sẽ được mở bán lại."
         loading={deleteMutation.isPending}
         onConfirm={() => deleting && deleteMutation.mutate(deleting.id)}

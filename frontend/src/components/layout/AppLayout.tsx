@@ -52,7 +52,7 @@ export function AppLayout() {
           <Building2 className="h-5 w-5" />
         </div>
         <div>
-          <p className="text-sm font-bold leading-tight text-slate-900">RealEstate</p>
+          <p className="text-sm font-semibold leading-tight text-slate-900">RealEstate</p>
           <p className="text-xs text-slate-500">Manager</p>
         </div>
       </div>

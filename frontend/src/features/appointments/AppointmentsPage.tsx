@@ -259,6 +259,7 @@ export default function AppointmentsPage() {
       <ConfirmDialog
         open={!!deleting}
         title="Xóa lịch hẹn"
+        confirmLabel="Xóa lịch hẹn"
         message="Bạn chắc chắn muốn xóa lịch hẹn này?"
         loading={deleteMutation.isPending}
         onConfirm={() => deleting && deleteMutation.mutate(deleting.id)}

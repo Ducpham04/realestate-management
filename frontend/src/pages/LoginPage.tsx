@@ -47,15 +47,15 @@ export function LoginPage() {
 
   return (
     <div className="grid min-h-screen lg:grid-cols-2">
-      <div className="relative hidden overflow-hidden bg-brand-700 lg:block">
+      <div className="relative hidden overflow-hidden bg-brand-900 lg:block">
         <img
           src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1400&q=80"
           alt=""
-          className="absolute inset-0 h-full w-full object-cover opacity-40"
+          className="absolute inset-0 h-full w-full object-cover"
         />
-        <div className="relative flex h-full flex-col justify-end p-12 text-white">
-          <h2 className="text-3xl font-bold">Quản lý bất động sản tập trung</h2>
-          <p className="mt-3 max-w-md text-brand-100">
+        <div className="relative flex h-full flex-col justify-end bg-gradient-to-t from-brand-900 via-brand-900/60 to-transparent p-12 text-white">
+          <h2 className="max-w-md text-3xl font-semibold leading-tight">Quản lý bất động sản tập trung</h2>
+          <p className="mt-3 max-w-md leading-relaxed text-brand-50">
             Theo dõi nguồn hàng, khách hàng, lịch xem nhà và giao dịch trên một nền tảng duy nhất.
           </p>
         </div>
@@ -68,7 +68,7 @@ export function LoginPage() {
               <Building2 className="h-6 w-6" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-slate-900">Đăng nhập</h1>
+              <h1 className="text-xl font-semibold text-slate-900">Đăng nhập</h1>
               <p className="text-sm text-slate-500">RealEstate Manager</p>
             </div>
           </div>
@@ -97,7 +97,7 @@ export function LoginPage() {
           </form>
 
           <div className="mt-8 rounded-xl border border-dashed border-slate-300 p-4">
-            <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Tài khoản demo</p>
+            <p className="text-sm font-medium text-slate-700">Dùng thử với tài khoản demo</p>
             <div className="mt-2 flex gap-2">
               {DEMO_ACCOUNTS.map((acc) => (
                 <Button
