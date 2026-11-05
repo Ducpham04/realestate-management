@@ -1,0 +1,8 @@
+app:
+  jwt:
+    secret: dGVzdC1zZWNyZXQtdGVzdC1zZWNyZXQtdGVzdC1zZWNyZXQtMTIzNDU2Nzg=
+    cleanup-cron: "-"
+logging:
+  level:
+    org.testcontainers: WARN
+    com.github.dockerjava: WARN
