@@ -47,7 +47,7 @@ public class UserController {
     @GetMapping("/agents")
     @Operation(summary = "List active users that can be assigned to records")
     public ApiResponse<PageResponse<UserResponse>> agents(@ParameterObject Pageable pageable) {
-        return ApiResponse.ok(userService.search(null, null, pageable));
+        return ApiResponse.ok(userService.listAssignable(pageable));
     }
 
     @GetMapping("/{id}")

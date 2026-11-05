@@ -16,7 +16,7 @@ RUN --mount=type=cache,target=/root/.m2 mvn -B -q -DskipTests package \
 FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 
-RUN addgroup -S app && adduser -S app -G app && apk add --no-cache wget
+RUN addgroup -S app && adduser -S app -G app
 
 COPY --from=build /workspace/target/extracted/dependencies/ ./
 COPY --from=build /workspace/target/extracted/spring-boot-loader/ ./

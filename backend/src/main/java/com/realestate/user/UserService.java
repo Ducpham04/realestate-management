@@ -36,6 +36,12 @@ public class UserService {
         return PageResponse.of(userRepository.search(kw, role, safe), userMapper::toResponse);
     }
 
+    /** Enabled users that can be assigned as the responsible agent of a record. */
+    public PageResponse<UserResponse> listAssignable(Pageable pageable) {
+        Pageable safe = SortSanitizer.sanitize(pageable, SORTABLE, Sort.by("fullName"));
+        return PageResponse.of(userRepository.findByEnabledTrue(safe), userMapper::toResponse);
+    }
+
     public UserResponse getById(Long id) {
         return userMapper.toResponse(findUser(id));
     }
